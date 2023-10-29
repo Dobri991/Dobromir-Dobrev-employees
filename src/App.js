@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EmployeeTable from './components/EmployeeTable';
-import { handleSelectedFile } from './util/utils';
+import { handleSelectedFile } from './utils/utils';
 
 export default function App() {
   const [displayOverlapTable, handleDisplayOverlapTable] = useState('');
