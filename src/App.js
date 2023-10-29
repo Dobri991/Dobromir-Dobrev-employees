@@ -1,34 +1,20 @@
-import { readEmployeeDataFromCsv } from './util/Utils';
+import React, { useState } from 'react';
+import EmployeeTable from './components/EmployeeTable';
+import { handleSelectedFile } from './util/utils';
 
-function App() {
-  const handleSelectedFile = () => {
-    const reader = new FileReader()
-    const [file] = document.querySelector("input[type=file]").files;
-    let data = []
+export default function App() {
+  const [displayOverlapTable, handleDisplayOverlapTable] = useState('');
 
-    reader.addEventListener(
-      "load",
-      () => {
-        data = reader.result.replaceAll(' ', '').replace(/[\r]/gm, '').split('\n');
-        readEmployeeDataFromCsv(data);
-      },
-      false,
-    );
-
-    if (file) {
-      reader.readAsBinaryString(file);
-    }
+  const handleUploadFile = () => {
+    handleSelectedFile(handleDisplayOverlapTable)
   }
-
 
   return (
     <div className="App">
-      <label>Choose a profile picture:</label>
+      <label className="form-label">Choose CSV File:</label>
+      <input id="csv" type="file" accept=".csv" onChange={handleUploadFile} />
 
-      <input id="csv" type="file" accept=".csv" onChange={handleSelectedFile} />
-      <button type="button" id="btn">Process</button>
+      {displayOverlapTable ? <EmployeeTable employeeData={displayOverlapTable} /> : ''}
     </div>
   );
 }
-
-export default App;

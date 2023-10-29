@@ -1,4 +1,3 @@
-
 let employeeOverlap = []
 
 const calculateOverlap = (employee1, employee2, projectId) => {
@@ -41,15 +40,13 @@ const calculateOverlap = (employee1, employee2, projectId) => {
 }
 
 export const processProjectGroups = (groupedProjectsMap) => {
-
     groupedProjectsMap.forEach((value, key) => {
         calculateOverlap(value[0], value[1], key)
     })
 
-    // console.log(employeeOverlap)
-    return employeeOverlap;
+    const highestOverlap = employeeOverlap.reduce((prev, current) => (prev && prev.daysWorked > current.daysWorked) ? prev : current);
+    return highestOverlap;
 }
-
 
 /* Group data by project ID 
     Ignore any instances occuring less than 2 times */
@@ -88,9 +85,8 @@ const groupProjects = (records) => {
             count = 1;
         }
     }
-    console.log(groupedProjectsMap)
 
-    processProjectGroups(groupedProjectsMap)
+    return processProjectGroups(groupedProjectsMap)
 }
 
 export const readEmployeeDataFromCsv = (employeeData) => {
@@ -112,5 +108,29 @@ export const readEmployeeDataFromCsv = (employeeData) => {
         recordsMap.set(i, element);
     })
 
-    groupProjects(records);
+    return groupProjects(records);
 }
+
+export const handleSelectedFile = (cb) => {
+    const reader = new FileReader()
+    const [file] = document.querySelector("input[type=file]").files;
+    let data = [];
+    let res = {};
+
+    reader.addEventListener(
+      "load",
+      () => {
+        data = reader.result.replaceAll(' ', '').replace(/[\r]/gm, '').split('\n');
+        res = readEmployeeDataFromCsv(data);
+      },
+      false,
+    );
+
+    reader.addEventListener("loadend", () => {
+        cb(res)
+    });
+
+    if (file) {
+      reader.readAsBinaryString(file);
+    }
+  }
