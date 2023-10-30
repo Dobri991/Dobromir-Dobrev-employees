@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import EmployeeTable from './components/EmployeeTable';
-import { handleSelectedFile } from './utils/utils';
+import InputCsv from './components/InputCsv';
 
 export default function App() {
   const [displayOverlapTable, handleDisplayOverlapTable] = useState('');
 
-  const handleUploadFile = () => {
-    handleSelectedFile(handleDisplayOverlapTable)
+  const handleOnChange = (data) => {
+    handleDisplayOverlapTable(data);
   }
 
   return (
     <div className="App">
-      <label className="form-label">Choose CSV File:</label>
-      <input id="csv" type="file" accept=".csv" onChange={handleUploadFile} />
-
+      <InputCsv handleOnChange={handleOnChange} />
       {displayOverlapTable ? <EmployeeTable employeeData={displayOverlapTable} /> : ''}
     </div>
   );

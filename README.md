@@ -14,6 +14,22 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+## Project Implementation & Edge Case Scenarios 
+
+This solution brings up a couple of edge case scenarios which are not handled in the current solution.
+1. Format and sort data.
+2. Group projects together for better data processing.
+3. Have additional checks if a project has more than 2 employees that have worked on it, since having less than 2 means that the case of finding the overlap cannot be covered. If this case is not met, it could lead to additional wasting of processing power for larger quantities of data.
+
+The correct implementation approach for handling more than two people working on same project should be splitted between Front-End and Back-end. Where the Back-End should provide the largest overlap and on the Front-End side just to visualize the results. The easiest way I have found currently is to have an already relation database model, having joined tables with employees, project_id and worked_days. 
+
+We can also have a table containing the lowest and highest years, where each row would be a given day.
+Ex. For 01.01.2011 we would have a |date|projectId|employee1|employee2|... and so on with the number of employees worked on that project. This format continues untill we reach the highest workedTo year and each employee who has worked on that day would receive a mark of 1 day. Using SQL Joins and Count we can easily calculate the largest overlap between employees.
+
+The current implementation supports a single pair of employees who have worked on a project.
+There are a coupld of reasons for this approach. One is that the actual implementation using JS could quickly turn into a unmaintainable piece of functionality, which may take a fair bit of time to understand what is actually happening. Second the language itself is not meant to handle and calculate such tasks since its a single threated language and can lead to performance issues on large quantity of data. Third is regarding the time and all of the additional operations/checks that needed to be handled before actually processing the overlap. That is why I decided on this current implementation.
+
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
