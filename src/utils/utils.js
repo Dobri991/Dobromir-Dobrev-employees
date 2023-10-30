@@ -22,9 +22,7 @@ const calculateOverlap = (employee1, employee2, projectId) => {
         employeeOverlap.push(overlapData);
         return;
     }
-    /*
-        
-    */
+
     if (employee1StartDate <= employee2EndDate && employee2StartDate <= employee1EndDate) {
         // find start & finish overlap dates
         const startOverlap = employee1StartDate <= employee2StartDate ? employee2StartDate : employee1StartDate;
@@ -115,19 +113,19 @@ export const handleSelectedFile = (cb) => {
     const reader = new FileReader()
     const [file] = document.querySelector("input[type=file]").files;
     let data = [];
-    let res = {};
+    let finalOverlap = {};
 
     reader.addEventListener(
       "load",
       () => {
         data = reader.result.replaceAll(' ', '').replace(/[\r]/gm, '').split('\n');
-        res = readEmployeeDataFromCsv(data);
+        finalOverlap = readEmployeeDataFromCsv(data);
       },
       false,
     );
-
+    // callback to change state & pass data to table
     reader.addEventListener("loadend", () => {
-        cb(res)
+        cb(finalOverlap)
     });
 
     if (file) {
